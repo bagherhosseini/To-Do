@@ -9,5 +9,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.todo = function todo(req, res) {
+    const {username} = req.loggedInUser;
+    console.log(username);
     res.status(200).json('successful');
 }
