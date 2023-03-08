@@ -21,6 +21,8 @@ server.use(cookieParser());
 
 server.use('/',authenticationRoute);
 server.use('/', checkAuth, todoRoute);
+server.post('/checkCookie', checkAuth, (req, res) => {
 
+})
 
 server.listen(5050);

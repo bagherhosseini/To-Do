@@ -1,19 +1,25 @@
 import { useState } from "react";
 import LoginFetch from "../components/loginFetch";
+import { useNavigate } from "react-router-dom";
 
-export default function Login(){
+export default function Login(props){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('false');
+    const navigate = useNavigate();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await LoginFetch(username, password);
         const data = await response.json();
+        if(response.ok){
+            navigate("/Home", { state: { username } });
+        }
         setError(response.ok);
         await setMessage(data);
         console.log(message);
+        
     };
 
     return(
