@@ -9,6 +9,7 @@ server.use(express.json());
 
 const { authenticationRoute } = require('./routes/authRoute');
 const { todoRoute } = require('./routes/todoRoute');
+const { cookieRoute } = require('./routes/cookieRoute');
 const { checkAuth } = require('./middlewares/checkAuthMiddleware');
 
 // express.json() gör samma sak som vi gjorde i våran egna middleware.
@@ -19,10 +20,8 @@ server.use(cors({
 }));
 server.use(cookieParser());
 
-server.use('/',authenticationRoute);
-server.use('/', checkAuth, todoRoute);
-server.post('/checkCookie', checkAuth, (req, res) => {
-
-})
+server.use('/auth',authenticationRoute);
+server.use('/checkCookie', cookieRoute);
+server.use('/todo', checkAuth, todoRoute);
 
 server.listen(5050);
