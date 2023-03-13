@@ -60,7 +60,7 @@ exports.login = function login(req, res) {
                 maxAge: 360000,
                 sameSite: 'none',
                 // Secure är just nu buggat för Postman, använd inte secure: true för Postman.
-                // secure: true,
+                secure: true,
                 httpOnly: false
             });
 
