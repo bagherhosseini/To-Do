@@ -1,5 +1,5 @@
 import { useState } from "react";
-import RegisterFetch from "../components/register";
+import RegisterFetch from "../components/registerFetch";
 
 export default function Register(){
     const [name, setName] = useState('');
@@ -10,18 +10,25 @@ export default function Register(){
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await RegisterFetch(name ,username, password);
-        const data = await response.json();
-        setError(response.ok);
-        setMessage(data);
-        console.log(message);
+        try{
+            const response = await RegisterFetch(name ,username, password);
+            const data = await response.json();
+            setError(response.ok);
+            setMessage(data);
+            return;
+
+        }catch (error) {
+            setError(false);
+            setMessage(error.message)
+            return;
+        }
     };
 
     return(
         <form className="registerForm" onSubmit={handleSubmit}>
             <label htmlFor="name">
                 <span>name:</span>
-                <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} required/>
+                <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)}/>
             </label>
 
             <label htmlFor="username">

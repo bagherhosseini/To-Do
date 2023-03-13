@@ -1,7 +1,9 @@
 const express = require('express');
 const { todo } = require('../controllers/todoController/todoController');
+const { todoDelete } = require('../controllers/todoController/DeleteTodoController');
 const todoRoute = express.Router();
 
-todoRoute.post('/', todo);
+todoRoute.get('/', todo);
+todoRoute.delete('/', todoDelete);
 
 exports.todoRoute = todoRoute;

@@ -6,9 +6,8 @@ exports.checkCookie = function checkCookie(req, res){
     try {
         // Verifierear tokenen.
         const loggedInUserToken = jwt.verify(authToken, secret);
-        console.log(loggedInUserToken);
         if(!loggedInUserToken){
-            res.status(401).json('Wrong token');
+            res.status(401).json('Token not found');
             return;
         }
         res.status(200).json('successful');

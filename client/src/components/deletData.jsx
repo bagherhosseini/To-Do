@@ -1,6 +1,7 @@
-export default function GetTodo(){
+export default function DeleteTodo(todoid){
     return fetch('http://localhost:5050/todo', {
-        method: 'GET',
+        method: 'DELETE',
+        body: JSON.stringify({ todoid }),
         credentials:"include",
         headers: {
         'Content-Type': 'application/json'

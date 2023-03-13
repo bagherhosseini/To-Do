@@ -36,7 +36,7 @@ exports.register = function register(req, res) {
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
-    const sqlInsert = `insert users values(0, ?, ?, ?);`;
+    const sqlInsert = `insert users values(0, ?, ?, ?, null);`;
 
     pool.execute(sqlInsert,[name, username, hashedPassword], (error, result) => {
         if (error) {

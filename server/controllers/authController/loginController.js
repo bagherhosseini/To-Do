@@ -7,6 +7,7 @@ const mysql = require('mysql2');
 server.use(express.json());
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
+const secret = process.env.SECRET;
 
 const config = {
     user: process.env.DATABASE_USER,
@@ -14,9 +15,6 @@ const config = {
     host: process.env.DATABASE_HOST,
     database: process.env.DATABASE_DATABASE
 };
-
-const secret = process.env.SECRET;
-
 const pool = mysql.createPool(config);
 
 exports.login = function login(req, res) {
@@ -62,9 +60,18 @@ exports.login = function login(req, res) {
                 maxAge: 360000,
                 sameSite: 'none',
                 // Secure är just nu buggat för Postman, använd inte secure: true för Postman.
-                secure: true,
+                // secure: true,
                 httpOnly: false
             });
+
+            const updateToken = `UPDATE users SET token =? WHERE username =?`;
+            pool.execute(updateToken, [authToken, username], (error, result) => {
+                if (error) {
+                    res.status(500).json(error);
+                    return;
+                }
+            })
+
             res.status(200).json('Login successful');
         }
     });

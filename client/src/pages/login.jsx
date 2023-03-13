@@ -11,14 +11,21 @@ export default function Login(props){
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await LoginFetch(username, password);
-        const data = await response.json();
-        if(response.ok){
-            navigate("/Home", { state: { username } });
+        try{
+            const response = await LoginFetch(username, password);
+            const data = await response.json();
+            if(response.ok){
+                navigate("/Home", { state: { username } });
+            }
+            setError(response.ok);
+            setMessage(data);
+            return;
+
+        }catch (error) {
+            setError(false);
+            setMessage(error.message)
+            return;
         }
-        setError(response.ok);
-        await setMessage(data);
-        console.log(message);
         
     };
 
