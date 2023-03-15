@@ -1,5 +1,6 @@
 import { useState } from "react";
 import RegisterFetch from "../components/registerFetch";
+import { useNavigate } from "react-router-dom";
 
 export default function Register(){
     const [name, setName] = useState('');
@@ -7,6 +8,7 @@ export default function Register(){
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('false');
+    const navigate = useNavigate();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,6 +16,9 @@ export default function Register(){
             const response = await RegisterFetch(name ,username, password);
             const data = await response.json();
             setError(response.ok);
+            if(response.ok){
+                navigate("/");
+            }
             setMessage(data);
             return;
 

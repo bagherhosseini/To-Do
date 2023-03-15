@@ -9,6 +9,10 @@ body{
     color: white;
 }
 
+label{
+    width: fit-content;
+}
+
 main{
 
     & .loginForm{
@@ -27,5 +31,11 @@ main{
         & .error{
             background-color: hsl(0, 100%, 35%);
         }
+    }
+
+    & .todoList{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 }
