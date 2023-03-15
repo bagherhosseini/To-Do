@@ -20,3 +20,13 @@ CREATE TABLE todoList(
 
 insert todolist values
 (0, 'bagher', 'adhslkjdlask');
+
+CREATE TABLE requests(
+	requestid int PRIMARY KEY AUTO_INCREMENT,
+	requestsender VARCHAR (100) NOT NULL,
+	requestreceiver VARCHAR (100) NOT NULL,
+    status int NOT NULL DEFAULT 0,
+    FOREIGN KEY (requestsender) REFERENCES users(username) ON DELETE CASCADE,
+    FOREIGN KEY (requestreceiver) REFERENCES users(username) ON DELETE CASCADE,
+    CONSTRAINT Uniquereq UNIQUE(requestsender, requestreceiver)
+);

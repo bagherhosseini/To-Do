@@ -1,23 +1,26 @@
 import { useState, useEffect } from "react";
 import '../styles/style.scss';
-import ChackCookie from '../components/chackCookie';
+import ChackCookie from '../components/auth/chackCookie';
 // import AddTodo from "../components/addTodo";
-import GetTodo from '../components/getTodo';
-import DeleteTodo from "../components/deletData";
-import EditTodo from "../components/editTodo";
+import GetTodo from '../components/todo/getTodo';
+import DeleteTodo from "../components/todo/deletData";
+import EditTodo from "../components/todo/editTodo";
 import { useNavigate } from "react-router-dom";
-
-import addTodoFetch from "../components/addTodoFetch";
+import { Link } from "react-router-dom";
+import addTodoFetch from "../components/todo/addTodoFetch";
 
 
 export default function Home() {
     const [todos, setTodos] = useState([]);
     const [title, setTitle] = useState('');
-    const [error, setError] = useState(false);
+    const [error, setError] = useState();
+
     const [editErr, setEditErr] = useState(false);
     const [editErrMsg, setEditErrMsg] = useState();
+
     const [addErr, setAddErr] = useState(false);
-    const [addErrMsg, setAddErrMsg] = useState();
+    const [addMsg, setAddMsg] = useState();
+
     const navigate = useNavigate();
 
     ChackCookie();
@@ -35,7 +38,7 @@ export default function Home() {
             }
             setTodos(data);
         } catch (error) {
-            console.error('error' + error);
+            console.error(error);
             
         }
     }
@@ -44,19 +47,20 @@ export default function Home() {
         try {
             const response = await addTodoFetch(title);
             const data = await response.json();
+            setAddMsg(data);
+            setAddErr(false);
             if(data === "Authentication error: jwt expired"){
                 navigate("/");
             }
-            if(!response.ok){
+            if(response.ok){
                 setAddErr(true);
-                setAddErrMsg(data);
             }
-            setAddErr(false);
+            
             setTitle('');
             getTodos();
             return;
         } catch (error) {
-            console.error('error1' + error);
+            console.error(error);
             setError(true);
         }
     }
@@ -70,7 +74,7 @@ export default function Home() {
             }
             getTodos();
         } catch (error) {
-            console.error('error2' + error);
+            console.error(error);
         }
     }
 
@@ -78,17 +82,17 @@ export default function Home() {
         try {
             const response = await EditTodo(newValue, id);
             const data = await response.json();
+            setEditErrMsg(data);
+            setEditErr(false)
             if(data === "Authentication error: jwt expired"){
                 navigate("/");
             }
-            if(!response.ok){
+            if(response.ok){
                 setEditErr(true);
-                setEditErrMsg(data);
             }
-            setEditErr(false);
             getTodos();
         } catch (error) {
-            console.error('error3' + error);
+            console.error(error);
         }
     }
 
@@ -108,52 +112,35 @@ export default function Home() {
     }
 
     return (
-        <div>
-            <div className="addTodo">
-                <form className="todoForm" onSubmit={handleSubmit}>
-                    <label htmlFor="title">
-                        <span>Title:</span>
-                        <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        {
-                            addErr?
-                                <div>
-                                    <p>{addErrMsg}</p>
-                                </div>
-                            :
-                            <div>
-                                {/* <p>{editErr[0]}</p> */}
-                            </div>
-                        }
+        <div className="todos">
+            <Link className="linkToFriend" to="/Users"><i className="fa-solid fa-user-plus"></i></Link>
+            <h1>Get things done!</h1>
+
+            <form className="addTodo" onSubmit={handleSubmit}>
+                <div className="formCon">
+                    <label className="titleLabel" htmlFor="title">
+                        <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Min 3 charaters long"/>
                     </label>
-                    <button type="submit">Add</button>
-                    {!error ? (
-                        <div className="error">
-                            {/* <p>{message}</p> */}
-                        </div>
-                    ) : (
-                        <></>
-                    )}
-                </form>
-            </div>
+                    <button type="submit"><span>+</span></button>
+                </div>
+
+                <div className={addErr ? "success" : "error"} style={{display: addMsg ? "block" : "none"}}>
+                    <p>{addMsg}</p>
+                </div>
+            </form>
 
             <div className="todoList">
-            {todos.map((item) => (
-                <label key={item.todoid} htmlFor="todoCheckbox">
-                    <input name="title" defaultValue={item.title} type="text" onChange={(event) => onChangeInput(event, item.todoid)} placeholder="Type title"/>
-                    <input type="checkbox" id={`todoCheckbox-${item.todoid}`} value={item.todoid}onChange={handleCheckboxChange}/>
-                    {
-                        editErr?
-                            <div>
-                                <p>{editErrMsg}</p>
-                            </div>
-                        :
-                        <div>
-                            <p></p>
-                        </div>
-                    }
-                </label>
-            ))}
+                {todos.map((item) => (
+                    <div className="todo" key={item.todoid}>
+                        <input name="title" className="todoInput" defaultValue={item.title} type="text" onChange={(event) => onChangeInput(event, item.todoid)} placeholder="Min 3 charaters long"/>
+                        <input type="checkbox" id="todoCheckbox"value={item.todoid} onChange={handleCheckboxChange}/>
+                        <label className="todoLable" htmlFor="todoCheckbox"></label>
+                    </div>
+                ))}
 
+                <div className={editErr ? "success" : "error"} style={{display: editErrMsg ? "block" : "none"}}>
+                    <p>{editErrMsg}</p>
+                </div>
             </div>
         </div>
     );

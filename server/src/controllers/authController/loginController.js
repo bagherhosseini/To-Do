@@ -57,7 +57,7 @@ exports.login = function login(req, res) {
             const authToken = jwt.sign({username}, secret, {expiresIn: 120});
             res.cookie('authToken', authToken, {
                 // expires: new Date('9999-12-31'),
-                maxAge: 360000,
+                maxAge: 3600000,
                 sameSite: 'none',
                 // Secure är just nu buggat för Postman, använd inte secure: true för Postman.
                 secure: true,

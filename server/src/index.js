@@ -9,6 +9,7 @@ server.use(express.json());
 
 const { authenticationRoute } = require('./routes/authRoute');
 const { todoRoute } = require('./routes/todoRoute');
+const { usersRoute } = require('./routes/usersRoute');
 const { cookieRoute } = require('./routes/cookieRoute');
 const { checkAuth } = require('./middlewares/checkAuthMiddleware');
 
@@ -23,5 +24,6 @@ server.use(cookieParser());
 server.use('/auth',authenticationRoute);
 server.use('/checkCookie', cookieRoute);
 server.use('/todo', checkAuth, todoRoute);
+server.use('/users', checkAuth, usersRoute);
 
 server.listen(5050);

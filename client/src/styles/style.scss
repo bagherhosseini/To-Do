@@ -2,28 +2,93 @@
     margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+    font-family: Consolas,monaco,monospace; 
 }
 
 body{
     background-color: hsl(0, 0%, 5%);
     color: white;
+    background: url(https://steamuserimages-a.akamaihd.net/ugc/1678120729579339650/40A46978EF29C7099912D8CA459BBC9FAC764F2E/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=#000000&letterbox=false);
+    background-position: center;
+    background-size: cover;
 }
 
-label{
-    width: fit-content;
+input{
+    border: none;
+    outline: none;
+}
+
+button{
+    cursor: pointer;
+    border: none;
+    padding: 10px;
 }
 
 main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    /* From https://css.glass */
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
 
-    & .loginForm{
+    & .form{
+        background-color: rgba(17, 17, 17, 0.719);
+        width: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 50px;
+        border-radius: 10px;
+        gap: 15px;
+        max-width: 400px;
+        width: 100%;
+
+        & .userInfoLabel{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            font-size: 1.2em;
+
+            & .userInfo{
+                font-size: 1.05rem;
+                width: 100%;
+                background-color: #ecf0f3;
+                padding: 10px 20px;
+                border-radius: 999px;
+                box-shadow: inset 6px 6px 6px hsl(210, 1%, 40%), inset -6px -6px 6px hsl(0, 0%, 80%);
+            }
+        }
+
+        & button{
+            width: 100%;
+            border-radius: 999px;
+            margin-top: 10px;
+            background-color: #1a1dc2;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        & .linkTo{
+            color: white;
+        }
+        
+        & h1{
+            margin-top: 20px;
+        }
 
         & .error{
             background-color: hsl(0, 100%, 35%);
+            padding: 10px 20px;
+            border-radius: 9px;
         }
-    }
 
-    & .registerForm{
-        
         & .success{
             background-color: limegreen;
         }
@@ -33,9 +98,154 @@ main{
         }
     }
 
-    & .todoList{
+    & .todos{
+        position: relative;
+        background-color: rgba(17, 17, 17, 0.719);
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 50px;
+        border-radius: 10px;
+        gap: 35px;
+        max-width: 1000px;
+        width: 100%;
+
+        & .linkToFriend{
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 1.5em;
+            color: white;
+
+            &:hover{
+                color: hsl(0, 0%, 80%);
+            }
+        }
+
+        & h1{
+            height: 100px;
+            display: flex;
+            align-items: center;
+            font-size: 2.5rem;
+        }
+
+        & .addTodo{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+
+            & .formCon{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+                width: 100%;
+                gap: 10px;
+            }
+
+            & .titleLabel{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+
+                & input{
+                    font-size: 1.05rem;
+                    width: 100%;
+                    background-color: #ecf0f3;
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                }
+            }
+
+            & button{
+                height: 50px;
+                width: 50px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                outline: 1px dotted rgb(37, 37, 37);
+                outline-offset: -4px;
+                background: hsl(0deg 0% 75%);
+                box-shadow: inset -1px -1px #292929, inset 1px 1px #fff, inset -2px -2px rgb(158, 158, 158), inset 2px 2px #ffffff;
+                font-size: 3em;
+                position: relative;
+
+                & span{
+                    height: 60px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+        }
+
+        & .todoList{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+
+            .todo{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: row;
+                gap: 10px;
+                background-color: hsla(0, 0%, 20%, 0.719);
+                border-radius: 10px;
+                border: 1px solid black;
+                padding: 10px 10px;
+            }
+
+            & .todoInput{
+                font-size: 1.2rem;
+                width: 100%;
+                background: none;
+                color: white;
+                padding: 10px 20px;
+            }
+
+            & #todoCheckbox{
+                cursor: pointer;
+                border: none;
+                outline: none;
+                transform: scale(2);
+            }
+        }
+
+        & .error{
+            background-color: red;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        & .success{
+            border-radius: 8px;
+            padding: 15px;
+            background-color: limegreen;
+        }
+    }
+
+    & .users{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        & .user{
+            display: flex;
+            gap: 10px;
+        }
     }
 }

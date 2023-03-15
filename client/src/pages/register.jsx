@@ -1,6 +1,7 @@
 import { useState } from "react";
-import RegisterFetch from "../components/registerFetch";
+import RegisterFetch from "../components/auth/registerFetch";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Register(){
     const [name, setName] = useState('');
@@ -30,23 +31,27 @@ export default function Register(){
     };
 
     return(
-        <form className="registerForm" onSubmit={handleSubmit}>
-            <label htmlFor="name">
-                <span>name:</span>
-                <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)}/>
+        <form className="form" onSubmit={handleSubmit}>
+            <h1>Sign Up</h1>
+
+            <label htmlFor="name" className="userInfoLabel">
+                <span>name</span>
+                <input type="text" id="name" className="userInfo" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name"/>
             </label>
 
-            <label htmlFor="username">
-                <span>Username:</span>
-                <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+            <label htmlFor="username" className="userInfoLabel">
+                <span>Username</span>
+                <input type="text" id="username" className="userInfo" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"/>
             </label>
 
-            <label htmlFor="password">
-                <span>Password:</span>
-                <input type="text" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <label htmlFor="password" className="userInfoLabel">
+                <span>Password</span>
+                <input type="password" id="password" className="userInfo" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min 3 charaters long"/>
             </label>
 
-            <button type="submit">Registrera</button>
+            <button type="submit">Sign Up</button>
+
+            <Link className="linkTo" to="/">Sign in</Link>
 
             <div className={error ? "success" : "error"}>
                 <p>{message}</p>
