@@ -18,7 +18,7 @@ const config = {
 const pool = mysql.createPool(config);
 
 exports.getUsers = function getUsers(req, res) {
-    const getUsers = `SELECT name, username FROM users`;
+    const getUsers = `SELECT name, username, userid FROM users`;
     pool.execute(getUsers, (error, result) => {
         if (error) {
             res.status(500).json(error);

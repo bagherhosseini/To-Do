@@ -133,7 +133,7 @@ export default function Home() {
                 {todos.map((item) => (
                     <div className="todo" key={item.todoid}>
                         <input name="title" className="todoInput" defaultValue={item.title} type="text" onChange={(event) => onChangeInput(event, item.todoid)} placeholder="Min 3 charaters long"/>
-                        <input type="checkbox" id="todoCheckbox"value={item.todoid} onChange={handleCheckboxChange}/>
+                        <input type="checkbox" id="todoCheckbox" value={item.todoid} onChange={handleCheckboxChange}/>
                         <label className="todoLable" htmlFor="todoCheckbox"></label>
                     </div>
                 ))}

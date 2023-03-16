@@ -1,7 +1,8 @@
-export default function UsersFetch(username, password){
+export default function AddUsersFetch(usernameRec){
     return fetch('http://localhost:5050/users', {
-        method: 'GET',
+        method: 'POST',
         credentials:"include",
+        body: JSON.stringify({ usernameRec }),
         headers: {
         'Content-Type': 'application/json'
         }
