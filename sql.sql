@@ -54,6 +54,53 @@ DELIMITER ;
 insert requests values
 (0, 'bagher', 'bagher1', 1);
 
+DELIMITER //
+CREATE PROCEDURE GetRelatedUsers(IN user_username VARCHAR(100))
+BEGIN
+  SELECT u.*
+  FROM users u
+  JOIN requests r
+    ON (u.username = r.requestsender OR u.username = r.requestreceiver)
+  WHERE (r.requestsender = user_username OR r.requestreceiver = user_username)
+    AND u.username <> user_username
+    AND r.status = 2;
+END //
+DELIMITER ;
+
+CALL GetRelatedUsers('bagher1');
+
+
+DELIMITER //
+CREATE PROCEDURE GetFriendTodoList(IN user_username VARCHAR(100), IN friend_username VARCHAR(100))
+BEGIN
+  -- Check if the friend exists in the users table
+  IF NOT EXISTS (SELECT 1 FROM users WHERE username = friend_username) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Error: This user does not exist';
+  END IF;
+
+  -- Check if there is a request with status 2 between the two users
+  IF NOT EXISTS (
+    SELECT 1
+    FROM requests r
+    WHERE (
+        (r.requestsender = user_username AND r.requestreceiver = friend_username)
+        OR (r.requestsender = friend_username AND r.requestreceiver = user_username)
+      )
+      AND r.status = 2
+  ) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Error: You are not friends with this user';
+  END IF;
+
+  SELECT t.*
+  FROM todoList t
+  WHERE t.username = friend_username;
+END //
+DELIMITER ;
+
+CALL GetFriendTodoList('bagher1', 'bagher');
+
 
 DELETE FROM requests;
 SET SQL_SAFE_UPDATES = 0;

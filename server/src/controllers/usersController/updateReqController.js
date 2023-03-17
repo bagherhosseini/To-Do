@@ -17,27 +17,17 @@ const config = {
 };
 const pool = mysql.createPool(config);
 
-exports.getUsers = function getUsers(req, res) {
-
+exports.updateRequest = function updateRequest(req, res) {
     try {
-        const {authToken} = req.cookies;
-
-        // Verifierear tokenen.
-        const loggedInUserToken = jwt.verify(authToken, secret);
-        if(!loggedInUserToken){
-            res.status(401).json('Token not found');
-            return;
-        }
-        const username = loggedInUserToken.username;
-
-        const getUsers = `SELECT name, username, userid FROM users WHERE username !=?`;
-
-        pool.execute(getUsers, [username], (error, result) => {
+        const {reqid} = req.body;
+        const updateTodo = `UPDATE requests SET status = 2 WHERE requestid = ?`;
+        
+        pool.execute(updateTodo, [reqid], (error, result) => {
             if (error) {
                 res.status(500).json(error);
                 return;
             } else {
-                res.status(200).json(result);
+                res.status(200).json('Updated successfully');
             }    
         })
 

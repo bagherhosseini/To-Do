@@ -1,5 +1,5 @@
-export default function GetUsersFetch(){
-    return fetch('http://localhost:5050/users', {
+export default function GetFriendsFetch(){
+    return fetch('http://localhost:5050/users/friends', {
         method: 'GET',
         credentials:"include",
         headers: {

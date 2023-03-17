@@ -17,11 +17,10 @@ const config = {
 };
 const pool = mysql.createPool(config);
 
-exports.addUser = function addUser(req, res) {
+exports.getFriendTodoController = function getFriendTodoController(req, res) {
     try {
-        const { usernameRec } = req.body;
         const {authToken} = req.cookies;
-        const status = 1;
+        const {Friendusername} = req.body;
 
         // Verifierear tokenen.
         const loggedInUserToken = jwt.verify(authToken, secret);
@@ -29,24 +28,30 @@ exports.addUser = function addUser(req, res) {
             res.status(401).json('Token not found');
             return;
         }
-        const usernameSen = loggedInUserToken.username;
+        const username = loggedInUserToken.username;
 
-        const insertReq = `insert requests values(0, ?, ?, ?);`;
-        pool.execute(insertReq,[usernameSen, usernameRec, status], (error, result) => {
+        if(username === Friendusername){
+            res.status(200).json('Friend username is same as username');
+            return;
+        }
+
+        const addTodo = `CALL GetFriendTodoList(?,?)`;
+        pool.execute(addTodo, [username, Friendusername], (error, result) => {
             if (error) {
-                if(error.code === 'ER_DUP_ENTRY'){
-                    res.status(400).json("You have already sent a request to this user");
+                if(error.message === "You are not friends with this user"){
+                    res.status(403).json("You are not friends with this user");
                     return;
-                }else if(error.message === "A request between these users already exists in either direction"){
-                    res.status(400).json("This user have already sent a request to you");
+                }else if(error.message === "This user does not exist"){
+                    res.status(404).json("This user does not exist");
+                    return;
+                }else{
+                    res.status(500).json(error);
                     return;
                 }
-                res.status(500).json(error);
-                return;
+            }else{
+                res.status(200).json(result[0]);
             }
-    
-            res.status(201).json('added successfuly');
-        });
+        })
 
     } catch (error) { 
         res.status(401).json('Authentication error: ' + error.message);
