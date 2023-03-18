@@ -141,7 +141,7 @@ export default function Home() {
                     ))
                     :
                         <div className="noDataError">
-                            <span>You have any todos</span>
+                            <span>You dont have any todos</span>
                         </div>
                 }
 

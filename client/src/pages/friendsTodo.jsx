@@ -38,7 +38,7 @@ export default function FriendsTodo(){
                 <Link className="linkLogOut" to="/"><i className="fa-solid fa-right-from-bracket"></i></Link>
             </div>
             <h1> {Friendusername} Todo List</h1>
-            {!setError ? 
+            {!error ? 
             
                     friendTodos.length ? 
                     friendTodos.map((item) => (

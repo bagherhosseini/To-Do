@@ -39,7 +39,7 @@ exports.getFriendTodoController = function getFriendTodoController(req, res) {
         pool.execute(addTodo, [username, Friendusername], (error, result) => {
             if (error) {
                 if(error.message === "Error: You are not friends with this user"){
-                    res.status(403).json("You are not friend with this user");
+                    res.status(403).json("You're not friend with this user");
                     return;
                 }else if(error.message === "Error: This user does not exist"){
                     res.status(404).json("This user does not exist");
