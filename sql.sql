@@ -51,6 +51,23 @@ END;
 //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE GetUnrelatedUsers(IN user_username VARCHAR(100))
+BEGIN
+  SELECT u.*
+  FROM users u
+  WHERE u.username <> user_username
+    AND NOT EXISTS (
+      SELECT 1
+      FROM requests r
+      WHERE (r.requestsender = user_username AND r.requestreceiver = u.username)
+         OR (r.requestsender = u.username AND r.requestreceiver = user_username)
+    );
+END //
+DELIMITER ;
+
+CALL GetUnrelatedUsers('bagher1');
+
 insert requests values
 (0, 'bagher', 'bagher1', 1);
 

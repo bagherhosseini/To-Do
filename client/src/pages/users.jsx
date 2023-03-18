@@ -43,16 +43,14 @@ export default function Users(){
             const data = await response.json();
             setAddUserMsg(data);
             setAddUserErr(false);
-            console.log(data);
+            getReq();
+            getUsers();
             if(data === "Authentication error: jwt expired"){
                 navigate("/");
             }
             if(response.ok){
                 setAddUserErr(true);
             }
-            getReq();
-            
-            return;
         } catch (error) {
             console.error(error);
         }
@@ -75,7 +73,6 @@ export default function Users(){
         try {
             const response = await UpdateReqFetch(reqid);
             const data = await response.json();
-            console.log(data);
             if(data === "Authentication error: jwt expired"){
                 navigate("/");
             }
@@ -109,37 +106,64 @@ export default function Users(){
         updateReq(reqid);
     }
 
-
     return(
-        <div>
+        <div className="userSection">
+            <div className="link">
+                <Link className="linkLogOut" to="/"><i className="fa-solid fa-right-from-bracket"></i></Link>
+            </div>
+
             <div className="users">
                 <h1>Users</h1>
-                {users.map((item) => (
-                    <div className="user" key={item.userid}>
-                        <span>{item.name}</span>
-                        <span>{item.username}</span>
-                        <button value={item.username} onClick={handleAddUser}>add</button>
-                    </div>
-                ))}
+                {
+                    users.length ? 
+                        users.map((item) => (
+                            <div className="user" key={item.userid}>
+                                <div className="userInfo">
+                                    <span>{item.name}</span>
+                                    <span>{item.username}</span>
+                                </div>
+                                <button value={item.username} onClick={handleAddUser}>add</button>
+                            </div>
+                        ))
+                    :
+                        <div className="error">
+                            <span>There are no users</span>
+                        </div>
+                }
+                
             </div>
 
             <div className="requestCon">
                 <h1>Requests</h1>
-                {reqs.map((item) => (
-                    <div className="" key={item.requestid}>
-                        <span>{item.requestsender}</span>
-                        <button value={item.requestid} onClick={handleAcceptRequest}>✔</button>
-                    </div>
-                ))}
+                {
+                    reqs.length ? 
+                        reqs.map((item) => (
+                            <div className="requests" key={item.requestid}>
+                                <span>{item.requestsender}</span>
+                                <button value={item.requestid} onClick={handleAcceptRequest}>✔</button>
+                            </div>
+                        ))
+                        :
+                            <div className="error">
+                                <span>There are no Requests</span>
+                            </div>
+                }
             </div>
 
             <div className="friends">
                 <h1>Friends</h1>
-                {friends.map((item) => (
-                    <div className="" key={item.userid}>
-                        <Link to={`/Todo/Friend/${item.username}`}>{item.username}</Link>
-                    </div>
-                ))}
+                {
+                    friends.length ? 
+                        friends.map((item) => (
+                            <div className="friend" key={item.userid}>
+                                <Link className="friendUsername" to={`/Todo/Friend/${item.username}`}>{item.username}</Link>
+                            </div>
+                        ))
+                        :
+                        <div className="error">
+                            <span>There are no Friends</span>
+                        </div>
+                }
             </div>
         </div>
     )

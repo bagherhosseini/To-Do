@@ -26,7 +26,7 @@ exports.todoDelete = function todoDelete(req, res) {
             res.status(500).json(error);
             return;
         } else {
-            res.status(200).json('Removed todo');
+            res.status(200).json('Removed successfully');
         }    
     })
 }

@@ -22,6 +22,13 @@ exports.addTodo = function addTodo(req, res) {
         const {authToken} = req.cookies;
         const {title} = req.body;
 
+        // Verifierear tokenen.
+        const loggedInUserToken = jwt.verify(authToken, secret);
+        if(!loggedInUserToken){
+            res.status(401).json('Token not found');
+            return;
+        }
+                
         const postSchema = joi.object(
             {
                 title: joi.string().min(3).required()
@@ -33,13 +40,6 @@ exports.addTodo = function addTodo(req, res) {
             return;
         }
 
-        // Verifierear tokenen.
-        const loggedInUserToken = jwt.verify(authToken, secret);
-        if(!loggedInUserToken){
-            res.status(401).json('Token not found');
-            return;
-        }
-        
         const username = loggedInUserToken.username;
         const addTodo = `insert todolist values(0, ?, ?)`;
         
@@ -48,7 +48,7 @@ exports.addTodo = function addTodo(req, res) {
                 res.status(500).json(error);
                 return;
             } else {
-                res.status(200).json('added successfully');
+                res.status(201).json('added successfully');
             }    
         })
 

@@ -22,6 +22,13 @@ exports.updateTodo = function updateTodo(req, res) {
         const {authToken} = req.cookies;
         const {title, todoid} = req.body;
 
+        // Verifierear tokenen.
+        const loggedInUserToken = jwt.verify(authToken, secret);
+        if(!loggedInUserToken){
+            res.status(401).json('Token not found');
+            return;
+        }
+
         const postSchema = joi.object(
             {
                 title: joi.string().min(3).required(),
@@ -31,13 +38,6 @@ exports.updateTodo = function updateTodo(req, res) {
         const isValid = postSchema.validate(req.body);
         if (isValid.error) {
             res.status(400).json(isValid.error.details[0].message);
-            return;
-        }
-
-        // Verifierear tokenen.
-        const loggedInUserToken = jwt.verify(authToken, secret);
-        if(!loggedInUserToken){
-            res.status(401).json('Token not found');
             return;
         }
         

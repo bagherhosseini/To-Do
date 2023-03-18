@@ -36,7 +36,7 @@ exports.register = function register(req, res) {
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
-    const sqlInsert = `insert users values(0, ?, ?, ?, null);`;
+    const sqlInsert = `insert users values(0, ?, ?, ?);`;
 
     pool.execute(sqlInsert,[name, username, hashedPassword], (error, result) => {
         if (error) {
@@ -49,6 +49,6 @@ exports.register = function register(req, res) {
             }
         }
 
-        res.status(201).json('Register successful');
+        res.status(201).json('Registered successfully');
     });
 }

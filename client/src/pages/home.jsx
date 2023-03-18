@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+
 import '../styles/style.scss';
-import ChackCookie from '../components/auth/chackCookie';
-// import AddTodo from "../components/addTodo";
+
 import GetTodo from '../components/todo/getTodo';
 import DeleteTodo from "../components/todo/deletData";
 import EditTodo from "../components/todo/editTodo";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import addTodoFetch from "../components/todo/addTodoFetch";
 
 
 export default function Home() {
     const [todos, setTodos] = useState([]);
     const [title, setTitle] = useState('');
-    const [error, setError] = useState();
 
     const [editErr, setEditErr] = useState(false);
     const [editErrMsg, setEditErrMsg] = useState();
@@ -23,7 +21,6 @@ export default function Home() {
 
     const navigate = useNavigate();
 
-    ChackCookie();
 
     useEffect(() => {
         getTodos();
@@ -61,7 +58,6 @@ export default function Home() {
             return;
         } catch (error) {
             console.error(error);
-            setError(true);
         }
     }
 
@@ -113,7 +109,11 @@ export default function Home() {
 
     return (
         <div className="todos">
-            <Link className="linkToFriend" to="/Users"><i className="fa-solid fa-user-plus"></i></Link>
+            <div className="link">
+                <Link className="linkToFriend" to="/Users"><i className="fa-solid fa-user"></i></Link>
+                <Link className="linkLogOut" to="/"><i className="fa-solid fa-right-from-bracket"></i></Link>
+            </div>
+
             <h1>Get things done!</h1>
 
             <form className="addTodo" onSubmit={handleSubmit}>
@@ -129,14 +129,21 @@ export default function Home() {
                 </div>
             </form>
 
-            <div className="todoList">
-                {todos.map((item) => (
-                    <div className="todo" key={item.todoid}>
-                        <input name="title" className="todoInput" defaultValue={item.title} type="text" onChange={(event) => onChangeInput(event, item.todoid)} placeholder="Min 3 charaters long"/>
-                        <input type="checkbox" id="todoCheckbox" value={item.todoid} onChange={handleCheckboxChange}/>
-                        <label className="todoLable" htmlFor="todoCheckbox"></label>
-                    </div>
-                ))}
+            <div className="todoList"> 
+            {
+                todos.length ? 
+                    todos.map((item) => (
+                        <div className="todo" key={item.todoid}>
+                            <input name="title" className="todoInput" defaultValue={item.title} type="text" onChange={(event) => onChangeInput(event, item.todoid)} placeholder="Min 3 charaters long"/>
+                            <input type="checkbox" id="todoCheckbox" value={item.todoid} onChange={handleCheckboxChange}/>
+                            <label className="todoLable" htmlFor="todoCheckbox"></label>
+                        </div>
+                    ))
+                    :
+                        <div className="noDataError">
+                            <span>You have any todos</span>
+                        </div>
+                }
 
                 <div className={editErr ? "success" : "error"} style={{display: editErrMsg ? "block" : "none"}}>
                     <p>{editErrMsg}</p>

@@ -43,14 +43,14 @@ exports.login = function login(req, res) {
         } else { 
             
             if(result.length === 0){
-                res.status(403).json('Invalid login credentials');
+                res.status(401).json('Invalid login credentials');
                 return;
             }
 
             const storedPassword = result[0].password;
             const isEqual = bcrypt.compareSync(password, storedPassword)
             if(!isEqual){
-                res.status(403).json('Invalid login credentials');
+                res.status(401).json('Invalid login credentials');
                 return;
             }
             
@@ -63,14 +63,6 @@ exports.login = function login(req, res) {
                 secure: true,
                 httpOnly: false
             });
-
-            const updateToken = `UPDATE users SET token =? WHERE username =?`;
-            pool.execute(updateToken, [authToken, username], (error, result) => {
-                if (error) {
-                    res.status(500).json(error);
-                    return;
-                }
-            })
 
             res.status(200).json('Login successful');
         }

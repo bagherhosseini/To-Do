@@ -11,7 +11,6 @@ const { authenticationRoute } = require('./routes/authRoute');
 const { todoRoute } = require('./routes/todoRoute');
 const { usersRoute } = require('./routes/usersRoute');
 const { friendRoute } = require('./routes/friendRoute');
-const { cookieRoute } = require('./routes/cookieRoute');
 const { checkAuth } = require('./middlewares/checkAuthMiddleware');
 
 // express.json() gör samma sak som vi gjorde i våran egna middleware.
@@ -23,7 +22,6 @@ server.use(cors({
 server.use(cookieParser());
 
 server.use('/auth',authenticationRoute);
-server.use('/checkCookie', cookieRoute);
 server.use('/todo', checkAuth, todoRoute);
 server.use('/users', checkAuth, usersRoute);
 server.use('/friend', checkAuth, friendRoute);

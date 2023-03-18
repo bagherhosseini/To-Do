@@ -35,10 +35,10 @@ exports.addUser = function addUser(req, res) {
         pool.execute(insertReq,[usernameSen, usernameRec, status], (error, result) => {
             if (error) {
                 if(error.code === 'ER_DUP_ENTRY'){
-                    res.status(400).json("You have already sent a request to this user");
+                    res.status(409).json("You have already sent a request to this user");
                     return;
-                }else if(error.message === "A request between these users already exists in either direction"){
-                    res.status(400).json("This user have already sent a request to you");
+                }else if(error.message === "Error: A request between these users already exists in either direction"){
+                    res.status(409).json("This user have already sent a request to you");
                     return;
                 }
                 res.status(500).json(error);

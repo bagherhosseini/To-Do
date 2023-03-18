@@ -30,14 +30,14 @@ exports.getUsers = function getUsers(req, res) {
         }
         const username = loggedInUserToken.username;
 
-        const getUsers = `SELECT name, username, userid FROM users WHERE username !=?`;
+        const getUsers = `CALL GetUnrelatedUsers(?);`;
 
         pool.execute(getUsers, [username], (error, result) => {
             if (error) {
                 res.status(500).json(error);
                 return;
             } else {
-                res.status(200).json(result);
+                res.status(200).json(result[0]);
             }    
         })
 
