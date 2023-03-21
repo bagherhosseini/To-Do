@@ -20,6 +20,19 @@ const pool = mysql.createPool(config);
 exports.updateRequest = function updateRequest(req, res) {
     try {
         const {reqid} = req.body;
+        
+        const postSchema = joi.object(
+            {
+                reqid: joi.number().max(100).required()
+            }
+        )
+    
+        const isValid = postSchema.validate(req.body);
+    
+        if (isValid.error) {
+            res.status(400).json(isValid.error.details[0].message);
+            return;
+        }
         const updateTodo = `UPDATE requests SET status = 2 WHERE requestid = ?`;
         
         pool.execute(updateTodo, [reqid], (error, result) => {

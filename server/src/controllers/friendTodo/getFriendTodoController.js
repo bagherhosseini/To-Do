@@ -22,6 +22,19 @@ exports.getFriendTodoController = function getFriendTodoController(req, res) {
         const {authToken} = req.cookies;
         const {Friendusername} = req.body;
 
+        const postSchema = joi.object(
+            {
+                Friendusername: joi.string().min(3).max(100).required(),
+            }
+        )
+    
+        const isValid = postSchema.validate(req.body);
+    
+        if (isValid.error) {
+            res.status(400).json(isValid.error.details[0].message);
+            return;
+        }
+
         // Verifierear tokenen.
         const loggedInUserToken = jwt.verify(authToken, secret);
         if(!loggedInUserToken){

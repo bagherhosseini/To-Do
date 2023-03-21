@@ -19,6 +19,21 @@ const pool = mysql.createPool(config);
 
 exports.todoDelete = function todoDelete(req, res) {
     const {todoid} = req.body;
+
+    const postSchema = joi.object(
+        {
+            todoid: joi.number().required(),
+        }
+    )
+
+    const isValid = postSchema.validate(req.body);
+
+    if (isValid.error) {
+        res.status(400).json(isValid.error.details[0].message);
+        console.log(isValid.error.details[0].message);
+        return;
+    }
+
     const DeleteTodo = `DELETE FROM todolist WHERE todoid =?`;
         
     pool.execute(DeleteTodo, [todoid], (error, result) => {

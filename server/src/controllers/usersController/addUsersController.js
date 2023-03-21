@@ -23,6 +23,19 @@ exports.addUser = function addUser(req, res) {
         const {authToken} = req.cookies;
         const status = 1;
 
+        const postSchema = joi.object(
+            {
+                usernameRec: joi.string().min(3).max(100).required()
+            }
+        )
+    
+        const isValid = postSchema.validate(req.body);
+    
+        if (isValid.error) {
+            res.status(400).json(isValid.error.details[0].message);
+            return;
+        }
+
         // Verifierear tokenen.
         const loggedInUserToken = jwt.verify(authToken, secret);
         if(!loggedInUserToken){
