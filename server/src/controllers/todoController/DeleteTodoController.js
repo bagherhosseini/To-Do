@@ -30,7 +30,6 @@ exports.todoDelete = function todoDelete(req, res) {
 
     if (isValid.error) {
         res.status(400).json(isValid.error.details[0].message);
-        console.log(isValid.error.details[0].message);
         return;
     }
 
